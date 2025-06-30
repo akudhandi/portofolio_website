@@ -16,13 +16,11 @@ import {
   useRopeJoint,
   useSphericalJoint,
   type RigidBodyProps,
-  RigidBody as RapierRigidBody // Impor RigidBody dari rapier
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
 
-// Catatan: Impor tipe kustom dihapus karena kita tidak bisa sepenuhnya menggunakannya dengan mudah.
-// Deklarasi global untuk JSX (declare global) telah dipindahkan ke file types/meshline.d.ts.
+// Catatan: Deklarasi global untuk JSX (declare global) ada di file types/meshline.d.ts.
 
 
 // Extend MeshLine into Fiber
@@ -105,8 +103,7 @@ interface BandProps {
 
 function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   const bandRef = useRef<THREE.Mesh>(null); 
-  // === PERBAIKAN: Kembali menggunakan useRef<any>(null) dan menonaktifkan ESLint untuk any ===
-  // Ini adalah workaround karena tipe RigidBody sangat kompleks dan terlalu banyak properti internal.
+  // Kembali menggunakan useRef<any>(null) dan menonaktifkan ESLint untuk any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fixed = useRef<any>(null); 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -123,15 +120,15 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
-  const segmentProps: RigidBodyProps = { // Menggunakan tipe RigidBodyProps yang diimpor
-    type: "dynamic", // Langsung assign string literal
+  const segmentProps: RigidBodyProps = { 
+    type: "dynamic",
     canSleep: true,
     colliders: false,
     angularDamping: 4,
     linearDamping: 4,
   };
 
-  // === PERBAIKAN: Kembali menggunakan 'as any' untuk useGLTF ===
+  // Kembali menggunakan 'as any' untuk useGLTF
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { nodes, materials } = useGLTF(cardGLB) as any; 
   const lanyardStrapTexture = useTexture(lanyardStrapTexturePath);
@@ -150,7 +147,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   );
 
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
-  const [hovered, hover] = useState(false);
+  const [hovered, hover] = useState(false); // Pastikan ini adalah fungsi setter 'hover'
 
   useEffect(() => {
     if (cardDesignTexture) {
@@ -163,10 +160,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
     }
   }, [cardDesignTexture, lanyardStrapTexture]);
 
-  // useRopeJoint dan useSphericalJoint memerlukan RefObject<RigidBody> dari Rapier,
-  // yang merupakan tipe asli mereka. Kita menggunakan useRef<any> untuk ref-nya,
-  // tapi pada saat memanggil hook ini, TypeScript akan mencoba mencocokkan.
-  // Ini mungkin akan memicu warning di IDE, tapi seharusnya berhasil di runtime jika strukturnya benar.
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
@@ -189,7 +182,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
-      // Pastikan current ada sebelum memanggil wakeUp
       fixed.current?.wakeUp();
       j1.current?.wakeUp();
       j2.current?.wakeUp();
@@ -203,9 +195,8 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       });
     }
 
-    // Pastikan semua current ada sebelum mengakses properti mereka
     if (fixed.current && bandRef.current && j1.current && j2.current && j3.current && card.current) { 
-      // === PERBAIKAN: Memastikan current ada sebelum assignment, dan casting properti yang digunakan ===
+      // Menggunakan casting ke any agar properti lerped bisa diakses
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       j1.current.lerped = (j1.current as any).lerped || new THREE.Vector3().copy(j1.current.translation());
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -282,17 +273,18 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
           <group
             scale={3.5}
             position={[0, -1.2, -0.05]}
+            // === PERBAIKAN: Memanggil fungsi setter 'hover' ===
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onPointerOver={() => hover(true)} 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onPointerOut={() => hover(false)} 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onPointerUp={(e: any) => { // Kembali ke 'any' untuk event
+            onPointerUp={(e: any) => { 
               e.target.releasePointerCapture(e.pointerId);
               drag(false);
             }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onPointerDown={(e: any) => { // Kembali ke 'any' untuk event
+            onPointerDown={(e: any) => { 
               e.target.setPointerCapture(e.pointerId);
               drag(
                 new THREE.Vector3()
