@@ -8,7 +8,7 @@ import {
   Sun,
   Download,
   Mail,
-  ExternalLink, // Tetap diimpor karena mungkin digunakan di tempat lain (misal social links)
+  ExternalLink,
   Github,
   Linkedin,
   MessageCircle,
@@ -42,8 +42,8 @@ const portfolioData = {
       description:
         "Built a desktop-based movie rating and subscription application designed to provide ratings and film recommendations, helping users discover movies aligned with their preferences and encouraging engagement through data-driven ratings. It features RDLC invoices, subscription verification, and an admin dashboard for review and revenue management.",
       type: "software",
-      github: "https://github.com/akudhandi/morations", // Link GitHub Morations
-      document: "https://drive.google.com/file/d/1DPp_aGh2goblsPKX-NN1RQ-XlcJp0d81/view?usp=drive_link" 
+      github: "https://github.com/akudhandi/morations",
+      document: "https://drive.google.com/file/d/1stkUu3uJV8ug0gX3sN6FJ7xHw9GaAi1j/view?usp=drive_link"
     },
     {
       name: "Lunar Store",
@@ -53,8 +53,8 @@ const portfolioData = {
       description:
         "Developed a professional, responsive, and user-friendly e-commerce website for Lunar Store, designed as a primary digital platform for selling premium applications and digital subscriptions. It includes shopping cart, integrated payment gateway, and order tracking for a seamless shopping experience.",
       type: "web",
-      github: "https://github.com/Hafidzrdwn/lunar_store_laravel", // Link GitHub Lunar Store
-      document: "https://drive.google.com/file/d/1ZtQqiz4MiNPIu2SqcBFX19-tlkcJgfYB/view?usp=drive_link" // Link dokumen DPPL ADSI (asumsi ini laporan Lunar Store)
+      github: "https://github.com/Hafidzrdwn/lunar_store_laravel",
+      document: "https://drive.google.com/file/d/1rlhFBzOvXI0p0H3s4tOw4qHA_f5OxQaX/view?usp=drive_link"
     },
     {
       name: "Blu by BCA Acceptance Research",
@@ -64,66 +64,59 @@ const portfolioData = {
       description:
         "An in-depth research project analyzing user acceptance of the Blu by BCA Digital application using the UTAUT framework, extended with the Perceived Risk construct. It identifies key factors influencing behavioral intention to adopt digital banking services through quantitative analysis.",
       type: "research",
-      doi: "https://doi.org/10.59934/jaiea.v4i3.1182", // Hanya Link DOI untuk riset ini
-      // github dan document dihapus sesuai permintaan
+      doi: "https://doi.org/10.59934/jaiea.v4i3.1182",
+      document: "https://drive.google.com/file/d/16eo5WSRd0vUIcXLkzD7vZzuNjy33Gvhq/view?usp=drive_link"
     },
     {
-      name: "Network Design Faculty Building", // Proyek baru
+      name: "Network Design Faculty Building",
       year: "2024",
       tools: ["Cisco Packet Tracer"],
       role: "Network Designer",
       description:
         "Documentation of network design and configuration for FIK I Building, UPN 'Veteran' Jawa Timur, using Cisco Packet Tracer. It includes network topology, device identification, IP schema, and recommendations for performance and security improvements.",
       type: "networking",
-      document: "https://drive.google.com/file/d/1s3dLCpXeAYnwI-pyfpwTRqJv4ZNSVtbh/view?usp=drive_link" // Hanya link dokumen
-      // github dan demo dihapus
+      document: "https://drive.google.com/file/d/1s3dLCpXeAYnwI-pyfpwTRqJv4ZNSVtbh/view?usp=drive_link"
     },
     {
-      name: "Desk-Go: Coworking Space Booking System", // Proyek baru
+      name: "Desk-Go: Coworking Space Booking System",
       year: "2024",
       tools: ["HTML", "PHP", "CSS", "Bootstrap", "JavaScript", "MySQL", "XAMPP"],
       role: "Full-Stack Web Developer",
       description:
         "A web-based system for monitoring and booking seats in a coworking space, designed to provide real-time seat availability, online booking, and management tools for administrators to optimize space utilization and enhance user experience.",
       type: "web",
-      document: "https://drive.google.com/file/d/1rlhFBzOvXI0p0H3s4tOw4qHA_f5OxQaX/view?usp=drive_link" // Hanya link dokumen
-      // github dan demo dihapus
+      document: "https://drive.google.com/file/d/1rlhFBzOvXI0p0H3s4tOw4qHA_f5OxQaX/view?usp=drive_link"
     },
     {
-      name: "Leafly Database Management", // Proyek baru
+      name: "Leafly Database Management",
       year: "2024",
       tools: ["MariaDB", "MySQL", "SQL"],
       role: "Database Administrator",
       description:
         "Implementation and management of a database system for the Leafly application (selling ready-to-cook vegetables, cut fruits, and fruit salads). Focuses on efficient data management, security, and scalability using MariaDB and MySQL, supporting flexible delivery and personalized nutrition information.",
       type: "database",
-      document: "https://drive.google.com/file/d/16eo5WSRd0vUIcXLkzD7vZzuNjy33Gvhq/view?usp=drive_link" // Hanya link dokumen
-      // github dan demo dihapus
+      document: "https://drive.google.com/file/d/16eo5WSRd0vUIcXLkzD7vZzuNjy33Gvhq/view?usp=drive_link"
     },
     {
-      name: "IS Security Evaluation - PT Kuelap", // Proyek baru
+      name: "IS Security Evaluation - PT Kuelap",
       year: "2024",
       tools: ["SNI ISO/IEC 27001:2022", "Indeks KAMI 5.0"],
       role: "Information Security Analyst",
       description:
         "Evaluated the information security management system maturity of PT. Kuelap Solusi Indonesia using SNI ISO/IEC 27001:2022 and Indeks KAMI 5.0. Identified security gaps and provided recommendations for improving governance, risk management, asset management, and personal data protection.",
       type: "research",
-      document: "https://drive.google.com/file/d/18cdV516-hAucnlSRXMpFLndo0D9WHHH5/view?usp=drive_link" // Hanya link dokumen
-      // github dan demo dihapus
+      document: "https://drive.google.com/file/d/18cdV516-hAucnlSRXMpFLndo0D9WHHH5/view?usp=drive_link"
     },
     {
-      name: "NextChamp", // Proyek yang sudah ada
+      name: "NextChamp",
       year: "2025",
       tools: ["Flutter", "Strapi", "MySQL", "Figma"],
       role: "Front-End Developer",
       description:
         "Developed a cross-platform mobile app for student competition mentorship, featuring secure login, mentor chat, AI-powered chatbot, and a discussion forum. Integrated Strapi and MySQL for real-time content and refined UI based on usability testing.",
       type: "mobile",
-      github: "https://github.com/akudhandi/nextchamp-strapi", // Link GitHub NextChamp
-      // demo dihapus
+      github: "https://github.com/akudhandi/nextchamp-strapi",
     },
-    // Jika Anda ingin menambahkan proyek lain dari link DOI yang belum ada di sini,
-    // berikan detailnya seperti proyek-proyek di atas.
   ],
   experiences: [
     {

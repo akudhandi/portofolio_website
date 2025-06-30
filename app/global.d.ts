@@ -1,23 +1,21 @@
-export { };
-
-declare module '*.glb';
-declare module '*.png';
-
-declare module 'meshline' {
-  export const MeshLineGeometry: any;
-  export const MeshLineMaterial: any;
+// app/global.d.ts
+// Global declarations for CSS Modules
+declare module '*.module.css' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
 }
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      meshLineGeometry: any;
-      meshLineMaterial: any;
-    }
-  }
+declare module '*.module.scss' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
 }
 
-- src/vite-env.d.ts
-/// <reference types="vite/client" />
-declare module '*.glb';
-declare module '*.png';
+declare module '*.module.sass' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
+
+declare module '*.module.less' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
