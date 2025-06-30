@@ -1,0 +1,296 @@
+/* Fade In Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Animation for Children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+}
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-children.visible > *:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.stagger-children.visible > *:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.stagger-children.visible > *:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.stagger-children.visible > *:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.stagger-children.visible > *:nth-child(5) {
+  transition-delay: 0.5s;
+}
+.stagger-children.visible > *:nth-child(6) {
+  transition-delay: 0.6s;
+}
+.stagger-children.visible > *:nth-child(7) {
+  transition-delay: 0.7s;
+}
+.stagger-children.visible > *:nth-child(8) {
+  transition-delay: 0.8s;
+}
+
+/* Slide In Animations */
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.6s ease;
+}
+
+.slide-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.6s ease;
+}
+
+.slide-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale Animation */
+.scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease;
+}
+
+.scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Typewriter Cursor */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent-primary);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Floating Animation */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Pulse Animation */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Glow Animation */
+.glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px var(--accent-primary);
+  }
+  to {
+    box-shadow: 0 0 30px var(--accent-primary), 0 0 40px var(--accent-primary);
+  }
+}
+
+/* Rotate Animation */
+.rotate {
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bounce In Animation */
+.bounce-in {
+  opacity: 0;
+  transform: scale(0.3);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.bounce-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Slide Up Animation */
+.slide-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+}
+
+.slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero Specific Animations */
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-loaded .profile-photo {
+  animation: bounceIn 0.8s ease 0.2s forwards;
+}
+
+.hero-loaded .hero-title {
+  animation: slideUp 0.8s ease 0.5s forwards;
+}
+
+.hero-loaded .hero-subtitle {
+  animation: slideUp 0.8s ease 3.5s forwards;
+}
+
+.hero-loaded .hero-description {
+  animation: slideUp 0.8s ease 3.7s forwards;
+}
+
+.hero-loaded .hero-buttons {
+  animation: slideUp 0.8s ease 3.9s forwards;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Project Filter Animation */
+.project-card {
+  transition: all 0.3s ease;
+}
+
+.project-card.filtering {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.project-card.show {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Loading Animation */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Smooth Transitions */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

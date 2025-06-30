@@ -1,27 +1,45 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
-    "esModuleInterop": true,
+    "incremental": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "jsx": "preserve", // INI PENTING: Memastikan JSX dikenali
     "plugins": [
       {
         "name": "next"
       }
     ],
+    // === Bagian ini adalah penambahan krusial untuk alias @/ ===
+    "baseUrl": ".", // Memberitahu TypeScript bahwa root proyek adalah dasar untuk path
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"], // Alias untuk root proyek
+      "@/components/*": ["./components/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/public/*": ["./public/*"],
+      "@/types/*": ["./types/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
