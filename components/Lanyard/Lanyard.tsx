@@ -1,11 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-unknown-property */
-
-"use client"
-
-import { useEffect, useRef, useState } from "react"
-import { Canvas, extend, useThree, useFrame } from "@react-three/fiber"
-import { useGLTF, useTexture, Environment, Lightformer } from "@react-three/drei"
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { Canvas, extend, useThree, useFrame } from "@react-three/fiber";
+import {
+  useGLTF,
+  useTexture,
+  Environment,
+  Lightformer,
+} from "@react-three/drei";
 import {
   BallCollider,
   CuboidCollider,
@@ -14,23 +16,28 @@ import {
   useRopeJoint,
   useSphericalJoint,
   type RigidBodyProps,
-} from "@react-three/rapier"
-import { MeshLineGeometry, MeshLineMaterial } from "meshline"
-import * as THREE from "three"
+  RigidBody as RapierRigidBody // Impor RigidBody dari rapier
+} from "@react-three/rapier";
+import { MeshLineGeometry, MeshLineMaterial } from "meshline";
+import * as THREE from "three";
+
+// Catatan: Impor tipe kustom dihapus karena kita tidak bisa sepenuhnya menggunakannya dengan mudah.
+// Deklarasi global untuk JSX (declare global) telah dipindahkan ke file types/meshline.d.ts.
+
 
 // Extend MeshLine into Fiber
-extend({ MeshLineGeometry, MeshLineMaterial })
+extend({ MeshLineGeometry, MeshLineMaterial });
 
 // Asset paths
-const cardGLB = "/assets/lanyard/card.glb"
-const lanyardStrapTexturePath = "/assets/lanyard/lanyard.png"
-const cardDesignTexturePath = "/assets/lanyard/card lanyard.png"
+const cardGLB = "/assets/lanyard/card.glb"; 
+const lanyardStrapTexturePath = "/assets/lanyard/lanyard.png";
+const cardDesignTexturePath = "/assets/lanyard/card lanyard.png";
 
 interface LanyardProps {
-  position?: [number, number, number]
-  gravity?: [number, number, number]
-  fov?: number
-  transparent?: boolean
+  position?: [number, number, number];
+  gravity?: [number, number, number];
+  fov?: number;
+  transparent?: boolean;
 }
 
 export default function Lanyard({
@@ -45,7 +52,9 @@ export default function Lanyard({
         shadows
         dpr={[1, 2]}
         camera={{ position, fov }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
+        onCreated={({ gl }) =>
+          gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
+        }
       >
         <Environment preset="city" blur={0.75}>
           <Lightformer
@@ -86,152 +95,215 @@ export default function Lanyard({
         </Physics>
       </Canvas>
     </div>
-  )
+  );
 }
 
 interface BandProps {
-  maxSpeed?: number
-  minSpeed?: number
+  maxSpeed?: number;
+  minSpeed?: number;
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
-  const bandRef = useRef<THREE.Mesh>(null)
-  const fixed = useRef<any>(null)
-  const j1 = useRef<any>(null)
-  const j2 = useRef<any>(null)
-  const j3 = useRef<any>(null)
-  const card = useRef<any>(null)
+  const bandRef = useRef<THREE.Mesh>(null); 
+  // === PERBAIKAN: Kembali menggunakan useRef<any>(null) dan menonaktifkan ESLint untuk any ===
+  // Ini adalah workaround karena tipe RigidBody sangat kompleks dan terlalu banyak properti internal.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fixed = useRef<any>(null); 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const j1 = useRef<any>(null);    
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const j2 = useRef<any>(null);    
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const j3 = useRef<any>(null);    
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const card = useRef<any>(null);  
 
-  const vec = new THREE.Vector3()
-  const ang = new THREE.Vector3()
-  const rot = new THREE.Vector3()
-  const dir = new THREE.Vector3()
+  const vec = new THREE.Vector3();
+  const ang = new THREE.Vector3();
+  const rot = new THREE.Vector3();
+  const dir = new THREE.Vector3();
 
-  const segmentProps = {
-    type: "dynamic" as RigidBodyProps["type"],
+  const segmentProps: RigidBodyProps = { // Menggunakan tipe RigidBodyProps yang diimpor
+    type: "dynamic", // Langsung assign string literal
     canSleep: true,
-    colliders: false as const,
+    colliders: false,
     angularDamping: 4,
     linearDamping: 4,
-  }
+  };
 
-  // Load GLB model dan tekstur
-  const gltf = useGLTF(cardGLB)
-  const nodes = gltf.nodes as any
-  const materials = gltf.materials as any
+  // === PERBAIKAN: Kembali menggunakan 'as any' untuk useGLTF ===
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { nodes, materials } = useGLTF(cardGLB) as any; 
+  const lanyardStrapTexture = useTexture(lanyardStrapTexturePath);
+  const cardDesignTexture = useTexture(cardDesignTexturePath);
 
-  const lanyardStrapTexture = useTexture(lanyardStrapTexturePath)
-  const cardDesignTexture = useTexture(cardDesignTexturePath)
-
-  const { width, height } = useThree((state) => state.size)
+  const { width, height } = useThree((state) => state.size);
 
   const [curve] = useState(
     () =>
-      new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]),
-  )
+      new THREE.CatmullRomCurve3([
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+      ])
+  );
 
-  const [dragged, drag] = useState<false | THREE.Vector3>(false)
-  const [hovered, hover] = useState(false)
+  const [dragged, drag] = useState<false | THREE.Vector3>(false);
+  const [hovered, hover] = useState(false);
 
   useEffect(() => {
     if (cardDesignTexture) {
-      cardDesignTexture.flipY = false
-      cardDesignTexture.needsUpdate = true
+      cardDesignTexture.flipY = false;
+      cardDesignTexture.needsUpdate = true;
     }
     if (lanyardStrapTexture) {
-      lanyardStrapTexture.wrapS = lanyardStrapTexture.wrapT = THREE.RepeatWrapping
-      lanyardStrapTexture.needsUpdate = true
+      lanyardStrapTexture.wrapS = lanyardStrapTexture.wrapT = THREE.RepeatWrapping;
+      lanyardStrapTexture.needsUpdate = true;
     }
-  }, [cardDesignTexture, lanyardStrapTexture])
+  }, [cardDesignTexture, lanyardStrapTexture]);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1])
+  // useRopeJoint dan useSphericalJoint memerlukan RefObject<RigidBody> dari Rapier,
+  // yang merupakan tipe asli mereka. Kita menggunakan useRef<any> untuk ref-nya,
+  // tapi pada saat memanggil hook ini, TypeScript akan mencoba mencocokkan.
+  // Ini mungkin akan memicu warning di IDE, tapi seharusnya berhasil di runtime jika strukturnya benar.
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
     [0, 1.45, 0],
-  ])
+  ]);
 
   useEffect(() => {
     if (hovered) {
-      document.body.style.cursor = dragged ? "grabbing" : "grab"
+      document.body.style.cursor = dragged ? "grabbing" : "grab";
       return () => {
-        document.body.style.cursor = "auto"
-      }
+        document.body.style.cursor = "auto";
+      };
     }
-  }, [hovered, dragged])
+  }, [hovered, dragged]);
 
   useFrame((state, delta) => {
-    if (dragged && typeof dragged !== "boolean") {
-      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera)
-      dir.copy(vec).sub(state.camera.position).normalize()
-      vec.add(dir.multiplyScalar(state.camera.position.length()))
-      ;[card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp?.())
+    if (dragged !== false) {
+      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
+      dir.copy(vec).sub(state.camera.position).normalize();
+      vec.add(dir.multiplyScalar(state.camera.position.length()));
+      // Pastikan current ada sebelum memanggil wakeUp
+      fixed.current?.wakeUp();
+      j1.current?.wakeUp();
+      j2.current?.wakeUp();
+      j3.current?.wakeUp();
+      card.current?.wakeUp(); 
 
       card.current?.setNextKinematicTranslation({
         x: vec.x - dragged.x,
         y: vec.y - dragged.y,
         z: vec.z - dragged.z,
-      })
+      });
     }
 
-    if (fixed.current && bandRef.current) {
-      ;[j1, j2].forEach((ref) => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation())
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())))
-        ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)))
-      })
+    // Pastikan semua current ada sebelum mengakses properti mereka
+    if (fixed.current && bandRef.current && j1.current && j2.current && j3.current && card.current) { 
+      // === PERBAIKAN: Memastikan current ada sebelum assignment, dan casting properti yang digunakan ===
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      j1.current.lerped = (j1.current as any).lerped || new THREE.Vector3().copy(j1.current.translation());
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      j2.current.lerped = (j2.current as any).lerped || new THREE.Vector3().copy(j2.current.translation());
 
-      curve.points[0].copy(j3.current.translation())
-      curve.points[1].copy(j2.current.lerped)
-      curve.points[2].copy(j1.current.lerped)
-      curve.points[3].copy(fixed.current.translation())
-      ;(bandRef.current.geometry as any).setPoints(curve.getPoints(32))
+      // Casting ke THREE.Vector3 untuk memastikan .distanceTo() dikenali
+      const clampedDistanceJ1 = Math.max(0.1, Math.min(1, (j1.current.lerped as THREE.Vector3).distanceTo(j1.current.translation())));
+      (j1.current.lerped as THREE.Vector3).lerp(j1.current.translation(), delta * (maxSpeed + clampedDistanceJ1 * (maxSpeed - minSpeed)));
 
-      ang.copy(card.current.angvel())
-      rot.copy(card.current.rotation())
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
+      const clampedDistanceJ2 = Math.max(0.1, Math.min(1, (j2.current.lerped as THREE.Vector3).distanceTo(j2.current.translation())));
+      (j2.current.lerped as THREE.Vector3).lerp(j2.current.translation(), delta * (maxSpeed + clampedDistanceJ2 * (maxSpeed - minSpeed)));
+
+
+      curve.points[0].copy(j3.current.translation());
+      curve.points[1].copy(j2.current.lerped);
+      curve.points[2].copy(j1.current.lerped);
+      curve.points[3].copy(fixed.current.translation());
+
+      (bandRef.current.geometry as InstanceType<typeof MeshLineGeometry>).setPoints(curve.getPoints(32));
+
+      ang.copy(card.current.angvel());
+      rot.copy(card.current.rotation());
+      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
     }
-  })
+  });
 
-  curve.curveType = "chordal"
-
-  const handlePointerDown = (e: any) => {
-    e.target.setPointerCapture(e.pointerId)
-    drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())))
-  }
-
-  const handlePointerUp = (e: any) => {
-    e.target.releasePointerCapture(e.pointerId)
-    drag(false)
-  }
+  curve.curveType = "chordal";
 
   return (
     <>
-      <group position={[0, 2.8, 0]}>
-        <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
+      <group position={[0, 2.8, 0]}> 
+        <RigidBody
+          ref={fixed}
+          {...segmentProps}
+          type={"fixed" as RigidBodyProps["type"]}
+        >
+          {/* Ini adalah titik awal yang tidak terlihat, tidak perlu collider visual */}
+        </RigidBody>
+        <RigidBody
+          position={[0.5, 0, 0]}
+          ref={j1}
+          {...segmentProps}
+          type={"dynamic" as RigidBodyProps["type"]}
+        >
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
+        <RigidBody
+          position={[1, 0, 0]}
+          ref={j2}
+          {...segmentProps}
+          type={"dynamic" as RigidBodyProps["type"]}
+        >
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
+        <RigidBody
+          position={[1.5, 0, 0]}
+          ref={j3}
+          {...segmentProps}
+          type={"dynamic" as RigidBodyProps["type"]}
+        >
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? "kinematicPosition" : "dynamic"}>
+        <RigidBody
+          position={[2, 0, 0]}
+          ref={card}
+          {...segmentProps}
+          type={
+            dragged
+              ? ("kinematicPosition" as RigidBodyProps["type"])
+              : ("dynamic" as RigidBodyProps["type"])
+          }
+        >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
             scale={3.5}
             position={[0, -1.2, -0.05]}
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
-            onPointerUp={handlePointerUp}
-            onPointerDown={handlePointerDown}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onPointerOver={() => hover(true)} 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onPointerOut={() => hover(false)} 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onPointerUp={(e: any) => { // Kembali ke 'any' untuk event
+              e.target.releasePointerCapture(e.pointerId);
+              drag(false);
+            }}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onPointerDown={(e: any) => { // Kembali ke 'any' untuk event
+              e.target.setPointerCapture(e.pointerId);
+              drag(
+                new THREE.Vector3()
+                  .copy(e.point)
+                  .sub(vec.copy(card.current.translation()))
+              );
+            }}
           >
-            <mesh geometry={nodes.card?.geometry}>
+            <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
-                map={cardDesignTexture}
+                map={cardDesignTexture} 
                 map-anisotropy={16}
                 clearcoat={1}
                 clearcoatRoughness={0.15}
@@ -239,8 +311,12 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
                 metalness={0.8}
               />
             </mesh>
-            <mesh geometry={nodes.clip?.geometry} material={materials.metal} material-roughness={0.3} />
-            <mesh geometry={nodes.clamp?.geometry} material={materials.metal} />
+            <mesh
+              geometry={nodes.clip.geometry}
+              material={materials.metal}
+              material-roughness={0.3}
+            />
+            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
           </group>
         </RigidBody>
       </group>
@@ -248,13 +324,13 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       <mesh ref={bandRef}>
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore */}
-        <meshLineGeometry />
+        <meshLineGeometry /> 
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore */}
         <meshLineMaterial
-          color={new THREE.Color(0x000000)}
+          color={new THREE.Color(0x000000)} 
           depthTest={false}
-          resolution={[width, height]}
+          resolution={[width, height]} 
           useMap={true}
           map={lanyardStrapTexture}
           repeat={[-4, 1]}
@@ -264,5 +340,5 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
         />
       </mesh>
     </>
-  )
+  );
 }
