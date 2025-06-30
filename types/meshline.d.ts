@@ -1,9 +1,6 @@
 // types/meshline.d.ts
 // Ini adalah deklarasi global untuk elemen JSX kustom dari meshline
 declare global {
-  interface ThisIsATestInterfaceThatShouldError {
-    property: string; // deliberately add an extra semicolon here to cause a syntax error
-}
   namespace JSX {
     interface IntrinsicElements {
       meshLineGeometry: {

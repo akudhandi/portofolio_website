@@ -73,7 +73,7 @@ const portfolioData = {
       tools: ["Cisco Packet Tracer"],
       role: "Network Designer",
       description:
-        "Documentation of network design and configuration for FIK I Building, UPN 'Veteran' Jawa Timur, using Cisco Packet Tracer. It includes network topology, device identification, IP schema, and recommendations for performance and security improvements.",
+        "Documentation of network design and configuration for FIK I Building, UPN &quot;Veteran&quot; Jawa Timur, using Cisco Packet Tracer. It includes network topology, device identification, IP schema, and recommendations for performance and security improvements.",
       type: "networking",
       document: "https://drive.google.com/file/d/1s3dLCpXeAYnwI-pyfpwTRqJv4ZNSVtbh/view?usp=drive_link"
     },
@@ -124,7 +124,7 @@ const portfolioData = {
       role: "Participant",
       year: "2025",
       description:
-        "Currently participating in Samsung's innovation competition, developing sustainable technology solutions for environmental challenges.",
+        "Currently participating in Samsung&apos;s innovation competition, developing sustainable technology solutions for environmental challenges.",
       type: "Competition",
     },
     {
@@ -360,7 +360,7 @@ export default function Portfolio() {
                       Background
                     </h3>
                     <p className="about-description">
-                      I'm a passionate second-year Information Systems student (5th semester) at UPN "Veteran" Jawa Timur, focusing on front-end development, UI/UX design, and data analytics. I have experience in building mobile and web applications using Flutter and Laravel, conducting user research and prototyping with Figma, and performing statistical analysis using Jamovi and WarpPLS. I am passionate about designing impactful, user-centered digital solutions.
+                      I&apos;m a passionate second-year Information Systems student (5th semester) at UPN &quot;Veteran&quot; Jawa Timur, focusing on front-end development, UI/UX design, and data analytics. I have experience in building mobile and web applications using Flutter and Laravel, conducting user research and prototyping with Figma, and performing statistical analysis using Jamovi and WarpPLS. I am passionate about designing impactful, user-centered digital solutions.
                     </p>
                   </div>
 
@@ -372,7 +372,7 @@ export default function Portfolio() {
                       <div className="detail-content">
                         <h4>Education</h4>
                         <p>Bachelor of Information System</p>
-                        <span className="detail-meta">UPN "Veteran" Jawa Timur, 3.72/4.00</span>
+                        <span className="detail-meta">UPN &quot;Veteran&quot; Jawa Timur, 3.72/4.00</span>
                         <span className="detail-meta">Jul 2023 - Present (5th Semester)</span>
                       </div>
                     </div>
@@ -523,7 +523,6 @@ export default function Portfolio() {
                         Code
                       </a>
                     )}
-                    {/* Tombol Demo dihapus */}
                     {project.document && (
                       <a href={project.document} className="project-link" target="_blank" rel="noopener noreferrer">
                         <HardDrive className="w-4 h-4" />
